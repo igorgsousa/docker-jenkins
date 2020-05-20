@@ -7,9 +7,7 @@ This respository has a dockerfile that will allow you run Jenkins with access to
 
 ## The problem
 
-You're running a jenkins container to build your project, and you need to build a docker image inside you job.
-
-#### What to do?
+You're running a jenkins container to build your project, and you need to build a docker image inside your job.
 Well, there are ways to perform that, but in the case the jenkins are running inside a docker container, 
 the best way is to allow Jenkins use the docker service that are running in the host. 
 
@@ -18,7 +16,7 @@ the best way is to allow Jenkins use the docker service that are running in the 
 When execute the command to run Jenkins you can bind mount the folder `/var/run/docker.sock` to the same folder inside the container. 
 Like below :
 
-  > docker run -name jenkins -p 8080:8080 -p 50000:50000 -v '/var/run/docker.sock:/var/run/docker.sock' jenkins/jenkins:lts
+  > $ docker run -name jenkins -p 8080:8080 -p 50000:50000 -v '/var/run/docker.sock:/var/run/docker.sock' jenkins/jenkins:lts
 
 This will bind you host directory with the same folder inside the container.
 
@@ -38,7 +36,7 @@ and this group doens't has enough permissions to access the folder `/var/run/doc
 First thing you have to know which groups has permissions to access the directory in the host. 
 You can check by typing this command in terminal
 
-  > ls -l /var/run/docker.sock
+  > $ ls -l /var/run/docker.sock
 
 You will get something similiar to this
 
@@ -51,12 +49,47 @@ You will get something similiar to this
   > 0 - owner UID (User identification)  
   > 993 - owner GID (Group Identification)
 
-Now we know the user group that have enough permissions to access the folder `/var/run/docker.sock`.
+Now we know the user group that has enough permissions to access the folder `/var/run/docker.sock`.
 
 Next, we need to add the user `jenkins` of our Jenkins container to a group  with the same GID.
 
-To do that we can access our container terminal typing this command in host
+To do that we can access our container's terminal typing this command in host
 
-  > docker exec -it -u root jenkins bash
+  > $ docker exec -it -u root jenkins bash
+
+Now we will check if exists a group named `docker` with this command
+
+  > $ cat /etc/group
+  
+You will get something like this
+
+![List-Permissions](https://github.com/igorgsousa/docker-jenkins/blob/master/imgs/list-groups.PNG)
+
+If you container dont have the group `docker`, you can creat it by typing this command
+
+  > $ groupadd -g 993 docker
+  
+*Note that 993 is the GID of the group that has enough permissions*
+
+
+And the last step is to add `jenkins` user to our new group `docker` with this command
+
+  > $ gpasswd -a jenkins docker
+  
+Now if we restart our container it will have enough permissions to access `/var/run/docker.sock` allowing it to use the host docker engine
+
+# Calm Down and pay attention!!!
+
+This article was just to explain what was happening and how solve it, but if you access the container terminal and run that commands, when your container die all your work will be gone and we will have to do it again. 
+
+To this problem i've create the dockerfile in this repository that create a derived imagem from official Jenkins image and run all that commands for you. The only thing you need to do is to discover the right GID of you docker engine host, replace in the docker file and build you custom Jenkins image.
+
+
+I hope this article helped you!
+
+My solution is based on this [article](https://medium.com/swlh/getting-permission-denied-error-when-pulling-a-docker-image-in-jenkins-docker-container-on-mac-b335af02ebca)!
+
+Thanks & good coding!!!
+
 
 
