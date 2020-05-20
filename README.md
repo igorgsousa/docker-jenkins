@@ -65,14 +65,14 @@ You will get something like this
 
 ![List-Groups](https://github.com/igorgsousa/docker-jenkins/blob/master/imgs/list-groups.PNG)
 
-If you container dont have the group `docker`, you can creat it by typing this command
+If you container dont have the group `docker`, you can create it by typing this command
 
   > $ groupadd -g 993 docker
   
 *Note that 993 is the GID of the group that has enough permissions*
 
 
-And the last step is to add `jenkins` user to our new group `docker` with this command
+And the last step is to add `jenkins` user to the group `docker` with this command
 
   > $ gpasswd -a jenkins docker
   
