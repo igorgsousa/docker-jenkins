@@ -51,7 +51,7 @@ You will get something similiar to this
 
 Now we know the user group that has enough permissions to access the folder `/var/run/docker.sock`.
 
-Next, we need to add the user `jenkins` of our Jenkins container to a group  with the same GID.
+Next, we need to add the user `jenkins` of our Jenkins container in a group  with the same GID.
 
 To do that we can access our container's terminal typing this command in host
 
@@ -82,7 +82,7 @@ Now if we restart our container it will have enough permissions to access `/var/
 
 This article was just to explain what was happening and how solve it, but if you access the container terminal and run that commands, when your container die all your work will be gone and we will have to do it again. 
 
-To this problem i've create the dockerfile in this repository that create a derived imagem from official Jenkins image and run all that commands for you. The only thing you need to do is to discover the right GID of you docker engine host, replace in the docker file and build you custom Jenkins image.
+To this problem i've create the dockerfile in this repository that create a derived image from official Jenkins image and run all that commands for you. The only thing you need to do is to discover the right GID of you docker engine host, replace in the docker file and build you custom Jenkins image.
 
 
 I hope this article helped you!
