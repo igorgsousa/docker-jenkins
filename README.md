@@ -36,14 +36,26 @@ and this group doens't has enough permissions to access the folder `/var/run/doc
 #### How to fix?
 
 First thing you have to know which groups has permissions to access the directory in the host. 
-You can check by typing this command in terminal.
+You can check by typing this command in terminal
 
   > ls -l /var/run/docker.sock
 
+You will get something similiar to this
 
+![List-Permissions](https://github.com/igorgsousa/docker-jenkins/blob/master/imgs/list-permissions.PNG)
+ 
+  > s - file type  
+  > rw - owner permission  
+  > rw - group permission  
+  > -- - all other users or groups  
+  > 0 - owner UID (User identification)  
+  > 993 - owner GID (Group Identification)
 
+Now we know the user group that have enough permissions to access the folder `/var/run/docker.sock`.
 
-You can check that by accessing the container bash with the command
+Next, we need to add the user `jenkins` of our Jenkins container to a group  with the same GID.
+
+To do that we can access our container terminal typing this command in host
 
   > docker exec -it -u root jenkins bash
 
