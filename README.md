@@ -63,7 +63,7 @@ Now we will check if exists a group named `docker` with this command
   
 You will get something like this
 
-![List-Permissions](https://github.com/igorgsousa/docker-jenkins/blob/master/imgs/list-groups.PNG)
+![List-Groups](https://github.com/igorgsousa/docker-jenkins/blob/master/imgs/list-groups.PNG)
 
 If you container dont have the group `docker`, you can creat it by typing this command
 
